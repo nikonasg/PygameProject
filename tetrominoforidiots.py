@@ -3,6 +3,8 @@
 # http://inventwithpython.com/pygame
 # Released under a "Simplified BSD" license
 
+# KRT 17/06/2012 rewrite event detection to deal with mouse use
+
 import random, time, pygame, sys
 from pygame.locals import *
 
@@ -207,16 +209,30 @@ def terminate():
     sys.exit()
 
 
+# KRT 17/06/2012 rewrite event detection to deal with mouse use
 def checkForKeyPress():
-    # Go through event queue looking for a KEYUP event.
-    # Grab KEYDOWN events to remove them from the event queue.
-    checkForQuit()
-
-    for event in pygame.event.get([KEYDOWN, KEYUP]):
-        if event.type == KEYDOWN:
-            continue
-        return event.key
+    for event in pygame.event.get():
+        if event.type == QUIT:      #event is quit 
+            terminate()
+        elif event.type == KEYDOWN:
+            if event.key == K_ESCAPE:   #event is escape key
+                terminate()
+            else:
+                return event.key   #key found return with it
+    # no quit or key events in queue so return None    
     return None
+
+
+##def checkForKeyPress():
+##    # Go through event queue looking for a KEYUP event.
+##    # Grab KEYDOWN events to remove them from the event queue.
+##    checkForQuit()
+##
+##    for event in pygame.event.get([KEYDOWN, KEYUP]):
+##        if event.type == KEYDOWN:
+##            continue
+##        return event.key
+##    return None
 
 
 def showTextScreen(text):

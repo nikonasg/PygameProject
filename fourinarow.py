@@ -14,7 +14,7 @@ DIFFICULTY = 2 # how many moves to look ahead. (>2 is usually too much)
 
 SPACESIZE = 50 # size of the tokens and individual board spaces in pixels
 
-FPS = 30 # frames per second to update the screen
+FPS = 100 # frames per second to update the screen
 WINDOWWIDTH = 640 # width of the program's window, in pixels
 WINDOWHEIGHT = 480 # height in pixels
 
@@ -42,24 +42,24 @@ def main():
     pygame.init()
     FPSCLOCK = pygame.time.Clock()
     DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
-    pygame.display.set_caption('Four in a Row')
+    pygame.display.set_caption('cat n sqrls')
 
     REDPILERECT = pygame.Rect(int(SPACESIZE / 2), WINDOWHEIGHT - int(3 * SPACESIZE / 2), SPACESIZE, SPACESIZE)
     BLACKPILERECT = pygame.Rect(WINDOWWIDTH - int(3 * SPACESIZE / 2), WINDOWHEIGHT - int(3 * SPACESIZE / 2), SPACESIZE, SPACESIZE)
-    REDTOKENIMG = pygame.image.load('4row_red.png')
+    REDTOKENIMG = pygame.image.load('squirrel.png')
     REDTOKENIMG = pygame.transform.smoothscale(REDTOKENIMG, (SPACESIZE, SPACESIZE))
-    BLACKTOKENIMG = pygame.image.load('4row_black.png')
+    BLACKTOKENIMG = pygame.image.load('cat.png')
     BLACKTOKENIMG = pygame.transform.smoothscale(BLACKTOKENIMG, (SPACESIZE, SPACESIZE))
     BOARDIMG = pygame.image.load('4row_board.png')
     BOARDIMG = pygame.transform.smoothscale(BOARDIMG, (SPACESIZE, SPACESIZE))
 
-    HUMANWINNERIMG = pygame.image.load('4row_humanwinner.png')
-    COMPUTERWINNERIMG = pygame.image.load('4row_computerwinner.png')
-    TIEWINNERIMG = pygame.image.load('4row_tie.png')
+    HUMANWINNERIMG = pygame.image.load('cat.png')
+    COMPUTERWINNERIMG = pygame.image.load('squirrel.png')
+    TIEWINNERIMG = pygame.image.load('Rock.png')
     WINNERRECT = HUMANWINNERIMG.get_rect()
     WINNERRECT.center = (int(WINDOWWIDTH / 2), int(WINDOWHEIGHT / 2))
 
-    ARROWIMG = pygame.image.load('4row_arrow.png')
+    ARROWIMG = pygame.image.load('Tree_Ugly.png')
     ARROWRECT = ARROWIMG.get_rect()
     ARROWRECT.left = REDPILERECT.right + 10
     ARROWRECT.centery = REDPILERECT.centery
@@ -75,11 +75,11 @@ def runGame(isFirstGame):
     if isFirstGame:
         # Let the computer go first on the first game, so the player
         # can see how the tokens are dragged from the token piles.
-        turn = COMPUTER
+        turn = HUMAN
         showHelp = True
     else:
         # Randomly choose who goes first.
-        if random.randint(0, 1) == 0:
+        if random.randint(0, 1) == 2:
             turn = COMPUTER
         else:
             turn = HUMAN
@@ -87,7 +87,6 @@ def runGame(isFirstGame):
 
     # Set up a blank board data structure.
     mainBoard = getNewBoard()
-
     while True: # main game loop
         if turn == HUMAN:
             # Human player's turn.
@@ -98,7 +97,27 @@ def runGame(isFirstGame):
             if isWinner(mainBoard, RED):
                 winnerImg = HUMANWINNERIMG
                 break
+        if turn == HUMAN:
+            # Human player's turn.
+            getHumanMove(mainBoard, showHelp)
+            if showHelp:
+                # turn off help arrow after the first move
+                showHelp = False
+            if isWinner(mainBoard, RED):
+                winnerImg = HUMANWINNERIMG
+                break
+        if turn == HUMAN:
+            # Human player's turn.
+            getHumanMove(mainBoard, showHelp)
+            if showHelp:
+                # turn off help arrow after the first move
+                showHelp = False
+            if isWinner(mainBoard, RED):
+                winnerImg = HUMANWINNERIMG
+                break
+            
             turn = COMPUTER # switch to other player's turn
+    
         else:
             # Computer player's turn.
             column = getComputerMove(mainBoard)
@@ -107,8 +126,7 @@ def runGame(isFirstGame):
             if isWinner(mainBoard, BLACK):
                 winnerImg = COMPUTERWINNERIMG
                 break
-            turn = HUMAN # switch to other player's turn
-
+            turn = HUMAN # switch to other player's turn 
         if isBoardFull(mainBoard):
             # A completely filled board means it's a tie.
             winnerImg = TIEWINNERIMG

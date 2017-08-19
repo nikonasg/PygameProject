@@ -3,13 +3,15 @@
 # http://inventwithpython.com/pygame
 # Released under a "Simplified BSD" license
 
+#KRT 14/06/2012 modified Start Screen and Game Over screen to cope with mouse events
+#KRT 14/06/2012 Added a non-busy wait to Game Over screen to reduce processor loading from near 100%
 import random, pygame, sys
 from pygame.locals import *
 
 FPS = 15
 WINDOWWIDTH = 640
 WINDOWHEIGHT = 480
-CELLSIZE = 20
+CELLSIZE = 10
 assert WINDOWWIDTH % CELLSIZE == 0, "Window width must be a multiple of cell size."
 assert WINDOWHEIGHT % CELLSIZE == 0, "Window height must be a multiple of cell size."
 CELLWIDTH = int(WINDOWWIDTH / CELLSIZE)
@@ -18,11 +20,11 @@ CELLHEIGHT = int(WINDOWHEIGHT / CELLSIZE)
 #             R    G    B
 WHITE     = (255, 255, 255)
 BLACK     = (  0,   0,   0)
-RED       = (255,   0,   0)
-GREEN     = (  0, 255,   0)
-DARKGREEN = (  0, 155,   0)
-DARKGRAY  = ( 40,  40,  40)
-BGCOLOR = BLACK
+RED       = (0,   40,   240)
+GREEN     = (  255, 0,   0)
+DARKGREEN = (  200, 0,   0)
+DARKGRAY  = ( 10,  190,  100)
+BGCOLOR = DARKGRAY
 
 UP = 'up'
 DOWN = 'down'
@@ -38,7 +40,7 @@ def main():
     FPSCLOCK = pygame.time.Clock()
     DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
     BASICFONT = pygame.font.Font('freesansbold.ttf', 18)
-    pygame.display.set_caption('Wormy')
+    pygame.display.set_caption('snakeies shakies')
 
     showStartScreen()
     while True:
@@ -113,18 +115,21 @@ def drawPressKeyMsg():
     DISPLAYSURF.blit(pressKeySurf, pressKeyRect)
 
 
+
+# KRT 14/06/2012 rewrite event detection to deal with mouse use
 def checkForKeyPress():
-    if len(pygame.event.get(QUIT)) > 0:
-        terminate()
+    for event in pygame.event.get():
+        if event.type == QUIT:      #event is quit 
+            terminate()
+        elif event.type == KEYDOWN:
+            if event.key == K_ESCAPE:   #event is escape key
+                terminate()
+            else:
+                return event.key   #key found return with it
+    # no quit or key events in queue so return None    
+    return None
 
-    keyUpEvents = pygame.event.get(KEYUP)
-    if len(keyUpEvents) == 0:
-        return None
-    if keyUpEvents[0].key == K_ESCAPE:
-        terminate()
-    return keyUpEvents[0].key
-
-
+    
 def showStartScreen():
     titleFont = pygame.font.Font('freesansbold.ttf', 100)
     titleSurf1 = titleFont.render('Wormy!', True, WHITE, DARKGREEN)
@@ -132,6 +137,10 @@ def showStartScreen():
 
     degrees1 = 0
     degrees2 = 0
+    
+#KRT 14/06/2012 rewrite event detection to deal with mouse use
+    pygame.event.get()  #clear out event queue
+    
     while True:
         DISPLAYSURF.fill(BGCOLOR)
         rotatedSurf1 = pygame.transform.rotate(titleSurf1, degrees1)
@@ -145,9 +154,8 @@ def showStartScreen():
         DISPLAYSURF.blit(rotatedSurf2, rotatedRect2)
 
         drawPressKeyMsg()
-
+#KRT 14/06/2012 rewrite event detection to deal with mouse use
         if checkForKeyPress():
-            pygame.event.get() # clear event queue
             return
         pygame.display.update()
         FPSCLOCK.tick(FPS)
@@ -178,12 +186,13 @@ def showGameOverScreen():
     drawPressKeyMsg()
     pygame.display.update()
     pygame.time.wait(500)
-    checkForKeyPress() # clear out any key presses in the event queue
-
+#KRT 14/06/2012 rewrite event detection to deal with mouse use
+    pygame.event.get()  #clear out event queue 
     while True:
         if checkForKeyPress():
-            pygame.event.get() # clear event queue
             return
+#KRT 12/06/2012 reduce processor loading in gameover screen.
+        pygame.time.wait(100)
 
 def drawScore(score):
     scoreSurf = BASICFONT.render('Score: %s' % (score), True, WHITE)
@@ -218,3 +227,4 @@ def drawGrid():
 
 if __name__ == '__main__':
     main()
+

@@ -16,8 +16,8 @@ SMALLBOARDSIZE  = 6 # size is in boxes
 MEDIUMBOARDSIZE = 17
 LARGEBOARDSIZE  = 30
 
-SMALLMAXLIFE  = 10 # number of turns
-MEDIUMMAXLIFE = 30
+SMALLMAXLIFE  = 64 # number of turns
+MEDIUMMAXLIFE = 64
 LARGEMAXLIFE  = 64
 
 FPS = 30
@@ -67,13 +67,13 @@ def main():
     DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
 
     # Load images
-    LOGOIMAGE = pygame.image.load('inkspilllogo.png')
-    SPOTIMAGE = pygame.image.load('inkspillspot.png')
-    SETTINGSIMAGE = pygame.image.load('inkspillsettings.png')
-    SETTINGSBUTTONIMAGE = pygame.image.load('inkspillsettingsbutton.png')
-    RESETBUTTONIMAGE = pygame.image.load('inkspillresetbutton.png')
+    LOGOIMAGE = pygame.image.load('squirrel.png')
+    SPOTIMAGE = pygame.image.load('gameicon.png')
+    SETTINGSIMAGE = pygame.image.load('grass1.png')
+    SETTINGSBUTTONIMAGE = pygame.image.load('cat.png')
+    RESETBUTTONIMAGE = pygame.image.load('Star.png')
 
-    pygame.display.set_caption('Ink Spill')
+    pygame.display.set_caption('5yr 0ld art project')
     mousex = 0
     mousey = 0
     mainBoard = generateRandomBoard(boardWidth, boardHeight, difficulty)
@@ -108,6 +108,15 @@ def main():
                 else:
                     # check if a palette button was clicked
                     paletteClicked = getColorOfPaletteAt(mousex, mousey)
+            elif event.type == KEYDOWN:
+                # support up to 9 palette keys
+                try:
+                    key = int(event.unicode)
+                except:
+                    key = None
+
+                if key != None and key > 0 and key <= len(paletteColors):
+                    paletteClicked = key - 1
 
         if paletteClicked != None and paletteClicked != lastPaletteClicked:
             # a palette button was clicked that is different from the
@@ -123,7 +132,7 @@ def main():
                     flashBorderAnimation(WHITE, mainBoard)
                 resetGame = True
                 pygame.time.wait(2000) # pause so the player can bask in victory
-            elif life == 0:
+            elif life == -1:
                 # life is zero, so player has lost
                 drawLifeMeter(0)
                 pygame.display.update()

@@ -12,24 +12,24 @@ WINHEIGHT = 480 # height in pixels
 HALF_WINWIDTH = int(WINWIDTH / 2)
 HALF_WINHEIGHT = int(WINHEIGHT / 2)
 
-GRASSCOLOR = (24, 255, 0)
+GRASSCOLOR = (0, 0, 255)
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 
 CAMERASLACK = 90     # how far from the center the squirrel moves before moving the camera
-MOVERATE = 9         # how fast the player moves
-BOUNCERATE = 6       # how fast the player bounces (large is slower)
-BOUNCEHEIGHT = 30    # how high the player bounces
-STARTSIZE = 25       # how big the player starts off
-WINSIZE = 300        # how big the player needs to be to win
-INVULNTIME = 2       # how long the player is invulnerable after being hit in seconds
-GAMEOVERTIME = 4     # how long the "game over" text stays on the screen in seconds
-MAXHEALTH = 3        # how much health the player starts with
+MOVERATE = 50        # how fast the player moves
+BOUNCERATE = .05     # how fast the player bounces (large is slower)
+BOUNCEHEIGHT = 70    # how high the player bounces
+STARTSIZE = 100      # how big the player starts off
+WINSIZE = 101        # how big the player needs to be to win
+INVULNTIME = 25      # how long the player is invulnerable after being hit in seconds
+GAMEOVERTIME = .002  # how long the "game over" text stays on the screen in seconds
+MAXHEALTH = 10       # how much health the player starts with
 
-NUMGRASS = 80        # number of grass objects in the active area
-NUMSQUIRRELS = 30    # number of squirrels in the active area
-SQUIRRELMINSPEED = 3 # slowest squirrel speed
-SQUIRRELMAXSPEED = 7 # fastest squirrel speed
+NUMGRASS = 200       # number of grass objects in the active area
+NUMSQUIRRELS = 80    # number of squirrels in the active area
+SQUIRRELMINSPEED = 1 # slowest squirrel speed
+SQUIRRELMAXSPEED = 2 # fastest squirrel speed
 DIRCHANGEFREQ = 2    # % chance of direction change per frame
 LEFT = 'left'
 RIGHT = 'right'
@@ -67,11 +67,11 @@ def main():
     FPSCLOCK = pygame.time.Clock()
     pygame.display.set_icon(pygame.image.load('gameicon.png'))
     DISPLAYSURF = pygame.display.set_mode((WINWIDTH, WINHEIGHT))
-    pygame.display.set_caption('Squirrel Eat Squirrel')
+    pygame.display.set_caption('duh_game')
     BASICFONT = pygame.font.Font('freesansbold.ttf', 32)
 
     # load the image files
-    L_SQUIR_IMG = pygame.image.load('squirrel.png')
+    L_SQUIR_IMG = pygame.image.load('gameicon.png')
     R_SQUIR_IMG = pygame.transform.flip(L_SQUIR_IMG, True, False)
     GRASSIMAGES = []
     for i in range(1, 5):
@@ -90,11 +90,11 @@ def runGame():
     winMode = False           # if the player has won
 
     # create the surfaces to hold game text
-    gameOverSurf = BASICFONT.render('Game Over', True, WHITE)
+    gameOverSurf = BASICFONT.render('U got eated', True, WHITE)
     gameOverRect = gameOverSurf.get_rect()
     gameOverRect.center = (HALF_WINWIDTH, HALF_WINHEIGHT)
 
-    winSurf = BASICFONT.render('You have achieved OMEGA SQUIRREL!', True, WHITE)
+    winSurf = BASICFONT.render('ur duh best nes controller ever', True, WHITE)
     winRect = winSurf.get_rect()
     winRect.center = (HALF_WINWIDTH, HALF_WINHEIGHT)
 

@@ -35,7 +35,7 @@ assert NUMGEMIMAGES >= 5 # game needs at least 5 types of gems to work
 # a match is made. The .wav files are named match0.wav, match1.wav, etc.
 NUMMATCHSOUNDS = 6
 
-MOVERATE = 25 # 1 to 100, larger num means faster animations
+MOVERATE = 75 # 1 to 100, larger num means faster animations
 DEDUCTSPEED = 0.8 # reduces score by 1 point every DEDUCTSPEED seconds.
 
 #             R    G    B
@@ -73,7 +73,7 @@ def main():
     pygame.init()
     FPSCLOCK = pygame.time.Clock()
     DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
-    pygame.display.set_caption('Gemgem')
+    pygame.display.set_caption('Hey look its a gem i am goin teh pleh')
     BASICFONT = pygame.font.Font('freesansbold.ttf', 36)
 
     # Load the images

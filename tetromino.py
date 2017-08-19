@@ -3,13 +3,15 @@
 # http://inventwithpython.com/pygame
 # Released under a "Simplified BSD" license
 
+# KRT 17/06/2012 rewrite event detection to deal with mouse use
+
 import random, time, pygame, sys
 from pygame.locals import *
 
 FPS = 25
 WINDOWWIDTH = 640
 WINDOWHEIGHT = 480
-BOXSIZE = 20
+BOXSIZE = 25
 BOARDWIDTH = 10
 BOARDHEIGHT = 20
 BLANK = '.'
@@ -33,9 +35,9 @@ LIGHTBLUE   = ( 20,  20, 175)
 YELLOW      = (155, 155,   0)
 LIGHTYELLOW = (175, 175,  20)
 
-BORDERCOLOR = BLUE
+BORDERCOLOR = RED
 BGCOLOR = BLACK
-TEXTCOLOR = WHITE
+TEXTCOLOR = BLUE
 TEXTSHADOWCOLOR = GRAY
 COLORS      = (     BLUE,      GREEN,      RED,      YELLOW)
 LIGHTCOLORS = (LIGHTBLUE, LIGHTGREEN, LIGHTRED, LIGHTYELLOW)
@@ -185,7 +187,7 @@ def runGame():
     movingDown = False # note: there is no movingUp variable
     movingLeft = False
     movingRight = False
-    score = 0
+    score = 100
     level, fallFreq = calculateLevelAndFallFreq(score)
 
     fallingPiece = getNewPiece()
@@ -309,16 +311,31 @@ def terminate():
     sys.exit()
 
 
+# KRT 17/06/2012 rewrite event detection to deal with mouse use
 def checkForKeyPress():
-    # Go through event queue looking for a KEYUP event.
-    # Grab KEYDOWN events to remove them from the event queue.
-    checkForQuit()
-
-    for event in pygame.event.get([KEYDOWN, KEYUP]):
-        if event.type == KEYDOWN:
-            continue
-        return event.key
+    for event in pygame.event.get():
+        if event.type == QUIT:      #event is quit 
+            terminate()
+        elif event.type == KEYDOWN:
+            if event.key == K_ESCAPE:   #event is escape key
+                terminate()
+            else:
+                return event.key   #key found return with it
+    # no quit or key events in queue so return None    
     return None
+
+
+
+##def checkForKeyPress():
+##    # Go through event queue looking for a KEYUP event.
+##    # Grab KEYDOWN events to remove them from the event queue.
+##    checkForQuit()
+##
+##    for event in pygame.event.get([KEYDOWN, KEYUP]):
+##        if event.type == KEYDOWN:
+##            continue
+##        return event.key
+##    return None
 
 
 def showTextScreen(text):
@@ -356,8 +373,10 @@ def checkForQuit():
 def calculateLevelAndFallFreq(score):
     # Based on the score, return the level the player is on and
     # how many seconds pass until a falling piece falls one space.
-    level = int(score / 10) + 1
-    fallFreq = 0.27 - (level * 0.02)
+    level = 100
+    fallFreq = 2
+##    level = int(score / 10) + 1
+##    fallFreq = 0.27 - (level * 0.02)
     return level, fallFreq
 
 def getNewPiece():

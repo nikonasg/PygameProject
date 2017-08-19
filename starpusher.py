@@ -47,7 +47,7 @@ def main():
     # when pygame.display.update() is called.
     DISPLAYSURF = pygame.display.set_mode((WINWIDTH, WINHEIGHT))
 
-    pygame.display.set_caption('Star Pusher')
+    pygame.display.set_caption('strs n stf')
     BASICFONT = pygame.font.Font('freesansbold.ttf', 18)
 
     # A global dict value that will contain all the Pygame

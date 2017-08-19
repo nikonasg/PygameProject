@@ -14,8 +14,8 @@ FPS = 10 # frames per second to update the screen
 WINDOWWIDTH = 640 # width of the program's window, in pixels
 WINDOWHEIGHT = 480 # height in pixels
 SPACESIZE = 50 # width & height of each space on the board, in pixels
-BOARDWIDTH = 8 # how many columns of spaces on the game board
-BOARDHEIGHT = 8 # how many rows of spaces on the game board
+BOARDWIDTH = 10 # how many columns of spaces on the game board
+BOARDHEIGHT = 10 # how many rows of spaces on the game board
 WHITE_TILE = 'WHITE_TILE' # an arbitrary but unique value
 BLACK_TILE = 'BLACK_TILE' # an arbitrary but unique value
 EMPTY_SPACE = 'EMPTY_SPACE' # an arbitrary but unique value
@@ -47,17 +47,17 @@ def main():
     pygame.init()
     MAINCLOCK = pygame.time.Clock()
     DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
-    pygame.display.set_caption('Flippy')
+    pygame.display.set_caption('paul stole an anklet design and vas is sups madFlippy')
     FONT = pygame.font.Font('freesansbold.ttf', 16)
     BIGFONT = pygame.font.Font('freesansbold.ttf', 32)
 
     # Set up the background image.
-    boardImage = pygame.image.load('flippyboard.png')
+    boardImage = pygame.image.load('4row_board.png')
     # Use smoothscale() to stretch the board image to fit the entire board:
     boardImage = pygame.transform.smoothscale(boardImage, (BOARDWIDTH * SPACESIZE, BOARDHEIGHT * SPACESIZE))
     boardImageRect = boardImage.get_rect()
     boardImageRect.topleft = (XMARGIN, YMARGIN)
-    BGIMAGE = pygame.image.load('flippybackground.png')
+    BGIMAGE = pygame.image.load('cat.png')
     # Use smoothscale() to stretch the background image to fit the entire window:
     BGIMAGE = pygame.transform.smoothscale(BGIMAGE, (WINDOWWIDTH, WINDOWHEIGHT))
     BGIMAGE.blit(boardImage, boardImageRect)
